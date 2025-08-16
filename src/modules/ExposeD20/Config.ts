@@ -14,8 +14,8 @@ export default <VTTES.Module_Config> {
 
       find_replace: [
         {
-          find: `var exports=exports||{},`,
-          replace: `window.d20 = d20; var exports=exports||{},`,
+          find: `/development$/.test(d20.environment)&&(window.debug_d20=d20);`,
+          replace: `/development$/.test(d20.environment)&&(window.debug_d20=d20);window.d20=d20;`,
         },
       ],
     },
