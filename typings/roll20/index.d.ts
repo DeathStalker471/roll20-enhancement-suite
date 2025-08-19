@@ -4,6 +4,7 @@ declare global {
 
 function generateUUID(): string;
 
+const BABYLON: any;
 namespace Roll20 {
   interface JukeboxFileStructure {
       id: string;
@@ -230,6 +231,7 @@ namespace Roll20 {
       rollabletables: ObjectStorage<RollableTable>;
       initiativewindow: InitiativeTracker;
       pages: ObjectStorageWithBackbone<Page>;
+      engine: any
 
       activePage: () => Page;
   }
