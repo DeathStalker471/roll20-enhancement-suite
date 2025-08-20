@@ -1,5 +1,5 @@
 {
-    "current": "1.28.23",
+    "current": "1.28.24",
     "versions": {
         "1.4.0": {
             "info": {
@@ -2896,7 +2896,19 @@
             "changes": [
                 {
                     "id": "",
-                    "content": "Begin Work on Jumpgate, Fix Auto Ping"
+                    "content": "Begin Work on Jumpgate"
+                }
+            ]
+        },
+        "1.28.24": {
+            "info": {
+                "title": "Jumpggate 2",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "Update Ship and Fix Auto Ping"
                 }
             ]
         }
