@@ -13,9 +13,9 @@ const editorUrls = [
 const gen = (browser, origVersionName) => {
   let manifest = {
     manifest_version: 2,
-    name: 'VTT Enhancement Suite',
+    name: 'Death Stalker Jumpgate VTT Enhancement Suite',
     version: VersionNameGen(origVersionName),
-    description: 'aka R20ES. Provides quality-of-life and workflow speed improvements to Roll20.',
+    description: 'aka DSR20ES. Provides quality-of-life and workflow speed improvements to Roll20.',
 
     permissions: [
       '*://app.roll20.net/editor/',
