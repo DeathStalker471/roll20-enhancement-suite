@@ -1,5 +1,5 @@
 {
-    "current": "1.28.26",
+    "current": "1.28.26.1",
     "versions": {
         "1.4.0": {
             "info": {
@@ -2941,6 +2941,18 @@
                 {
                     "id": "",
                     "content": "Fix Set Table Entry by Avatar Url"
+                }
+            ]
+        },
+        "1.28.26.1": {
+            "info": {
+                "title": "Progress V2 I don't Wanna Rebase",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": ""
                 }
             ]
         }
