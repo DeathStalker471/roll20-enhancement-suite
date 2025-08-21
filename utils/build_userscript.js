@@ -52,7 +52,7 @@ else {
 let script = fs.readFileSync(path_to_script, "utf8");
 
 const meta = `// ==UserScript==
-// @name         VTT Enhancement Suite
+// @name         Death Stalker Jumpgate VTT Enhancement Suite
 // @namespace    https://justas-d.github.io/
 // @version      ${changelog.current}
 // @description  aka R20ES. Provides quality-of-life and workflow speed improvements to Roll20.
