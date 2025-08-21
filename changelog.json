@@ -1,5 +1,5 @@
 {
-    "current": "1.28.25",
+    "current": "1.28.26",
     "versions": {
         "1.4.0": {
             "info": {
@@ -2925,6 +2925,22 @@
                 {
                     "id": "",
                     "content": "Fix Auto Ping Again"
+                }
+            ]
+        },
+        "1.28.26": {
+            "info": {
+                "title": "Progress is Progress",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "add Notes and Remove Counter Token Name as it is unnesscary"
+                },
+                {
+                    "id": "",
+                    "content": "Fix Set Table Entry by Avatar Url"
                 }
             ]
         }
