@@ -39,7 +39,7 @@ import ToolsMenu from "./modules/ToolsMenu/Config";
 //import AdjustableOpacity from "./modules/AdjustableOpacity/Config";
 import TokenFromImg from "./modules/TokenFromImg/Config";
 import DisablePlayerDrawings from "./modules/DisablePlayerDrawings/Config";
-//import SetTableEntryAvatarByUrl from "./modules/SetTableEntryAvatarByUrl/Config";
+import SetTableEntryAvatarByUrl from "./modules/SetTableEntryAvatarByUrl/Config";
 //import LibreAudio from "./modules/LibreAudio/Config";
 //import TokenBarPositionAdjust from "./modules/TokenBarPositionAdjust/Config"
 import PerformanceImprovements from "./modules/PerformanceImprovements/Config"
@@ -97,7 +97,7 @@ addCfg(TokenContextMenuApi);
 //addCfg(TokenLayerDrawing);
 addCfg(TransparentPaper);
 addCfg(HidePlayerList);
-//addCfg(SetTableEntryAvatarByUrl);
+addCfg(SetTableEntryAvatarByUrl);
 addCfg(PerformanceImprovements);
 addCfg(CharacterAvatarFromURL);
 addCfg(CameraStartPosition);

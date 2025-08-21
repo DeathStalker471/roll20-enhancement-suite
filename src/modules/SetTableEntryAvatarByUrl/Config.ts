@@ -21,7 +21,7 @@ export default <VTTES.Module_Config> {
 
         // add table entry && table ids to popup
         {
-          search_from: "tmpl_tableitemeditor",
+          search_from: `this.app.mount("#vm-page-menu")`,
           // M.$el.is(":visible")&&M.render()}),
           find: [ `()=>{`,1,`.$el.is(":visible")&&`,1,`.render()}),this.$el.on("click",".deleteitem"` ],
           replace: [ 
@@ -32,5 +32,3 @@ export default <VTTES.Module_Config> {
     }
   ]
 };
-
-
