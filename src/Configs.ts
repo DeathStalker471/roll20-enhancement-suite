@@ -36,7 +36,7 @@ import AutoOpenInitiativeTracker from "./modules/AutoOpenInitiativeTracker/Confi
 import ToolsMenu from "./modules/ToolsMenu/Config";
 //import ScaleTokenNamesBySize from "./modules/ScaleTokenNamesBySize/Config";
 //import AnimatedBackgroundLayer from "./modules/AnimatedBackgroundLayer/Config";
-import AdjustableOpacity from "./modules/AdjustableOpacity/Config";
+//import AdjustableOpacity from "./modules/AdjustableOpacity/Config";
 import TokenFromImg from "./modules/TokenFromImg/Config";
 import DisablePlayerDrawings from "./modules/DisablePlayerDrawings/Config";
 //import SetTableEntryAvatarByUrl from "./modules/SetTableEntryAvatarByUrl/Config";
@@ -59,7 +59,7 @@ addCfg(DisablePlayerDrawings);
 //addCfg(TokenBarPositionAdjust);
 //addCfg(LibreAudio);
 addCfg(TokenFromImg);
-addCfg(AdjustableOpacity);
+//addCfg(AdjustableOpacity);
 //addCfg(AnimatedBackgroundLayer);
 addCfg(AutoOpenInitiativeTracker);
 addCfg(AlternativeRadialMenu);

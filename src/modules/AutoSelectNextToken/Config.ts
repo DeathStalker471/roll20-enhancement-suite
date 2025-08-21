@@ -12,18 +12,5 @@ export default <VTTES.Module_Config> {
     "select_token.webm": "Automated token selection"
   },
 
-  mods: [
-    {
-      includes: "vtt.bundle",
-      stencils: [
-        {
-          search_from: "nextTurn(){",
-          find: [ `splice(0,1);`,1,`.push(`,-1,`[0]);` ],
-          replace: [
-            0, `if(window.r20es && window.r20es.selectInitiativeToken) {window.r20es.selectInitiativeToken(`,1,`[0]);}`
-          ],
-        },
-      ],
-    },
-  ],
+  // The 'mods' section is removed for stability and maintainability.
 }
