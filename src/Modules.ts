@@ -1,4 +1,4 @@
-import Mod_AdjustableOpacity          from "./modules/AdjustableOpacity/Module";
+//import Mod_AdjustableOpacity          from "./modules/AdjustableOpacity/Module"; not needed
 //import Mod_AlternatePageToolbarMenu   from "./modules/AlternatePageToolbarMenu/Module";
 import Mod_AlternativeRadialMenu      from "./modules/AlternativeRadialMenu/Module";
 //import Mod_AnimatedBackgroundLayer    from "./modules/AnimatedBackgroundLayer/Module";
@@ -50,7 +50,7 @@ import Mod_UserscriptUpdateChecker    from "./modules/UserscriptUpdateChecker/Mo
 const VTTES_MODULES = [];
 const add_module = (m) => VTTES_MODULES.push(m);
 
-add_module(Mod_AdjustableOpacity);
+//add_module(Mod_AdjustableOpacity); not needed
 //add_module(Mod_AlternatePageToolbarMenu);
 add_module(Mod_AlternativeRadialMenu);
 //add_module(Mod_AnimatedBackgroundLayer);

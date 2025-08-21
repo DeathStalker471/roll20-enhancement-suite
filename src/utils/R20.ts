@@ -122,13 +122,18 @@ namespace R20 {
         return window.Campaign.engine.tabletop.clearSelection();
     }
 
-    export function addTokenToSelection(token) {
+    export function addTokenToSelection(token: Roll20.CanvasObject) {
+        // The VTT Engine's tabletop manager has a dedicated method for this.
         window.Campaign.engine.tabletop.addToSelection(token);
     }
 
-    export function selectToken(token) {
-        unselectTokens();
-        addTokenToSelection(token);
+ 
+    export function selectToken(token: Roll20.CanvasObject) {
+        // The .select() method on the token object itself handles the logic
+        // of clearing the previous selection and selecting this new one.
+        if (token && typeof (token as any).select === 'function') {
+            (token as any).select();
+        }
     }
 
     export function hideTokenRadialMenu() {
@@ -138,7 +143,7 @@ namespace R20 {
     export function hideTokenContextMenu() {
         window.d20.token_editor.closeContextMenu();
     }
-
+    
     export function getCurrentPlayer(): Roll20.Player {
         return window.currentPlayer;
     }
