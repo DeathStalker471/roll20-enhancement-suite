@@ -56,9 +56,9 @@ const meta = `// ==UserScript==
 // @namespace    https://justas-d.github.io/
 // @version      ${changelog.current}
 // @description  aka R20ES. Provides quality-of-life and workflow speed improvements to Roll20.
-// @author       @Justas_Dabrila
-// @updateURL    https://justas-d.github.io/roll20-enhancement-suite/vttes.meta.js
-// @downloadURL  https://justas-d.github.io/roll20-enhancement-suite/vttes.user.js
+// @author       @Justas_Dabrila/DeathStalkerjr
+// @updateURL    https://raw.githubusercontent.com/DeathStalker471/roll20-enhancement-suite/refs/heads/master/page/vttes.meta.js
+// @downloadURL  https://raw.githubusercontent.com/DeathStalker471/roll20-enhancement-suite/refs/heads/master/page/vttes.user.js
 // @match        https://app.roll20.net/editor
 // @match        https://app.roll20.net/editor#*
 // @match        https://app.roll20.net/editor?*
