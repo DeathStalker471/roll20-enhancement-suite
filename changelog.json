@@ -1,5 +1,5 @@
 {
-    "current": "1.28.22.2",
+    "current": "1.28.22.3",
     "versions": {
         "1.4.0": {
             "info": {
@@ -2913,6 +2913,18 @@
                 {
                     "id": "",
                     "content": "1.28.22.1"
+                }
+            ]
+        },
+        "1.28.22.3": {
+            "info": {
+                "title": "Back  to Normal Baby",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "revert changes, no reason to use this branch"
                 }
             ]
         }
