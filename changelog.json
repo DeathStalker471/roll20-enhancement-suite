@@ -1,5 +1,5 @@
 {
-    "current": "1.28.26.2",
+    "current": "1.28.26.3",
     "versions": {
         "1.4.0": {
             "info": {
@@ -2965,6 +2965,18 @@
                 {
                     "id": "",
                     "content": "Allow people to use userscript"
+                }
+            ]
+        },
+        "1.28.26.3": {
+            "info": {
+                "title": "I AM NOT DOWN YET",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "FROM THE GRAVE"
                 }
             ]
         }
