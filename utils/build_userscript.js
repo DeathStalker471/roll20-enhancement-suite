@@ -90,7 +90,7 @@ const scripts = unsafeWindow.document.body.querySelectorAll("script");
 let bundle_url = null;
 
 for(const el of scripts) {
-  if(el.src && el.src.includes("cdn.roll20.net/vtt/legacy/production/20250930//vtt.bundle")) {
+  if(el.src && el.src.includes("cdn.roll20.net/vtt/legacy/production/20250930/vtt.bundle")) {
     bundle_url = el.src;
   }
 }
