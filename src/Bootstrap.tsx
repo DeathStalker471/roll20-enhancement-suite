@@ -343,7 +343,7 @@ export const bootstrap = () => {
       let bundle_url = null;
 
       for(const el of script_elements) {
-        if(el.src && el.src.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle")) {
+        if(el.src && el.src.includes("cdn.roll20.net/vtt/jumpgate/production/20250930/vtt.bundle")) {
           bundle_url = el.src;
         }
       }

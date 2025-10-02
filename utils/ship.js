@@ -59,10 +59,8 @@ fs.writeFileSync('page/latest_chrome_version', changelog.current, 'utf8');
 }
 
 noFail(`cp dist/chrome/prod/r20es_${changelog.current}_chrome.zip page/`);
-noFail(`cp builds/userscript/prod/vttes.meta.js page/`);
-noFail(`cp builds/userscript/prod/vttes.user.js page/`);
 
-//noFail("node utils/deploy_userscript.js");
+noFail("node utils/deploy_userscript.js");
 
 //noFail("npm run build-page");
 //noFail("npm run deploy-page");
