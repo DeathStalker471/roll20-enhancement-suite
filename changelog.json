@@ -2979,6 +2979,18 @@
                     "content": "FROM THE GRAVE"
                 }
             ]
+        },
+        "1.28.26.4": {
+            "info": {
+                "title": "No more Firefox IDS for you",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": ""
+                }
+            ]
         }
     }
 }
