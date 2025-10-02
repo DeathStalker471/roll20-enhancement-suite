@@ -105,8 +105,8 @@ if(doesBrowserNotSupportResponseFiltering()) {
         cancel = true;
       }
     }
-    else if(request.url.includes("cdn.roll20.net/vtt/jumpgate/production/20250930/vtt.bundle")) {
-      if(!request.url.includes("cdn.roll20.net/vtt/jumpgate/production/20250930/vtt.bundle?n")) {
+    else if(request.url.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle")) {
+      if(!request.url.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle?n")) {
         cancel = true;
       }
     }
@@ -143,7 +143,7 @@ if(doesBrowserNotSupportResponseFiltering()) {
 else {
   const redirect_targets = [
     "https://app.roll20.net/editor/startjs",
-    "https://cdn.roll20.net/vtt/jumpgate/production/20250930/vtt.bundle",
+    "https://cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle",
   ];
 
   // thanks, Firefox.
