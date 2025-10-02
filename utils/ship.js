@@ -62,11 +62,10 @@ noFail(`cp dist/chrome/prod/r20es_${changelog.current}_chrome.zip page/`);
 
 noFail("node utils/deploy_userscript.js");
 
-noFail("npm run build-page");
-noFail("npm run deploy-page");
+//noFail("npm run build-page");
+//noFail("npm run deploy-page");
 
-canFail(`git add page/`);
-canFail(`git commit -m "${changelog.current} page"`);
+//canFail(`git add page/`);
+//canFail(`git commit -m "${changelog.current} page"`);
 
-noFail("npm run deploy");
-
+//oFail("npm run deploy");

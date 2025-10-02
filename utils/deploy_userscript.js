@@ -9,5 +9,6 @@ const noFail = (script) => {
 };
 
 noFail(`npm run build-userscript production`)
-noFail(`node utils/userscript_upload.js`)
+noFail(`cp builds/userscript/prod/vttes.meta.js page/`);
+noFail(`cp builds/userscript/prod/vttes.user.js page/`);
 
