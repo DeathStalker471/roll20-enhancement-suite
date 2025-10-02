@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="https://justas-d.github.io/roll20-enhancement-suite/">VTT Enhancement Suite</a>
+    <a href="https://justas-d.github.io/roll20-enhancement-suite/">DeathStalker's VTT Enhancement Suite</a>
 </h1>
 
 <p align="center">
@@ -33,7 +33,7 @@ If you'd like to make a suggestion, please visit our Discord.
 
 To report any issues, head over to the Discord issues channel.
 
-If you'd like to support the project financially, <a href="https://justas-d.github.io/roll20-enhancement-suite/contribute.html">consider donating</a>.
+If you'd like to support the project financially, <a href="https://www.patreon.com/c/DeathStalkerjr">consider donating</a>.
 
 ## Building
 
