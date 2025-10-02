@@ -57,7 +57,7 @@ const gen = (browser, origVersionName) => {
 
     browser_specific_settings: {
       gecko: {
-        id: '{}',
+        id: "VTTES@deathsatlker.com",
       }
     },
 
