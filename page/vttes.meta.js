@@ -26,6 +26,6 @@
 // @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/patience.js","exclude":"*://app.roll20.net/v2/js/patience.js?n*"},"action":"cancel"}]
 // @webRequest [{"selector":{"include":"*://app.roll20.net/editor/startjs/?timestamp*","exclude":"*://app.roll20.net/editor/startjs/?n*"},"action":"cancel"}]
 // @webRequest [{"selector":{"include":"*://app.roll20.net/js/d20/loading.js?v=11","exclude":"*://app.roll20.net/js/d20/loading.js?n=11&v=11"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://cdn.roll20.net/vtt/legacy/production/20250930/vtt.bundle.*.js","exclude":"*://cdn.roll20.net/vtt/legacy/production/20250930/vtt.bundle.*.js?n*"},"action":"cancel"}]
+// @webRequest [{"selector":{"include":"*://cdn.roll20.net/vtt/legacy/production/latest/vtt.bundle.*.js","exclude":"*://cdn.roll20.net/vtt/legacy/production/latest/vtt.bundle.*.js?n*"},"action":"cancel"}]
 // @webRequest [{"selector":{"include":"*://app.roll20.net/js/tutorial_tips.js","exclude":"*://app.roll20.net/js/tutorial_tips.js?n*"},"action":"cancel"}]
 // ==/UserScript==
