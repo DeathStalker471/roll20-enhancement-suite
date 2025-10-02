@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VTT Enhancement Suite
 // @namespace    https://justas-d.github.io/
-// @version      1.28.22.2
+// @version      1.28.22.3
 // @description  aka R20ES. Provides quality-of-life and workflow speed improvements to Roll20.
 // @author       @Justas_Dabrila
 // @updateURL    https://raw.githubusercontent.com/DeathStalker471/roll20-enhancement-suite/refs/heads/Legacy-is-very-legacy-now/page/vttes.meta.js
