@@ -8,7 +8,7 @@ import Mod_AutoOpenInitiativeTracker  from "./modules/AutoOpenInitiativeTracker/
 import Mod_AutoPingNextToken          from "./modules/AutoPingNextToken/Module"; //Working
 import Mod_AutoSelectNextToken        from "./modules/AutoSelectNextToken/Module"; //Working
 import Mod_AutoSortInitiative         from "./modules/AutoSortInitiative/Module"; //Working one way or another
-import Mod_BulkMacro                  from "./modules/BulkMacro/Module"; //Button Missing
+//import Mod_BulkMacro                  from "./modules/BulkMacro/Module"; //Button Missing
 import Mod_CameraStartPosition        from "./modules/CameraStartPosition/Module"; // Not Currently Working
 import Mod_ChangeIdWhenDuplicating    from "./modules/ChangeIdWhenDuplicating/Module"; //Not SUre What this is
 import Mod_CharacterAvatarFromURL     from "./modules/CharacterAvatarFromURL/Module"; //Working
@@ -31,7 +31,7 @@ import Mod_MacroIO                    from "./modules/MacroIO/Module"; //Persume
 //import Mod_MoveCameraToToken          from "./modules/MoveCameraToToken/Module"; //Issues
 import Mod_NightMode                  from "./modules/NightMode/Module"; //untested
 import Mod_PerformanceImprovements    from "./modules/PerformanceImprovements/Module"; //untested
-import Mod_RollAndApplyHitDice        from "./modules/RollAndApplyHitDice/Module"; //Button Missing
+//import Mod_RollAndApplyHitDice        from "./modules/RollAndApplyHitDice/Module"; //Button Missing
 //import Mod_ScaleTokenNamesBySize      from "./modules/ScaleTokenNamesBySize/Module"; //Button Missing
 import Mod_SetTableEntryAvatarByUrl   from "./modules/SetTableEntryAvatarByUrl/Module"; //Working
 import Mod_Settings                   from "./modules/Settings/Module";// Working
@@ -60,7 +60,7 @@ add_module(Mod_AutoOpenInitiativeTracker);
 add_module(Mod_AutoPingNextToken);
 add_module(Mod_AutoSelectNextToken);
 add_module(Mod_AutoSortInitiative);
-add_module(Mod_BulkMacro);
+//add_module(Mod_BulkMacro);
 add_module(Mod_CameraStartPosition);
 add_module(Mod_ChangeIdWhenDuplicating);
 add_module(Mod_CharacterAvatarFromURL);
@@ -91,7 +91,7 @@ add_module(Mod_MacroIO);
 //add_module(Mod_MoveCameraToToken);
 add_module(Mod_NightMode);
 add_module(Mod_PerformanceImprovements);
-add_module(Mod_RollAndApplyHitDice);
+//add_module(Mod_RollAndApplyHitDice);
 //add_module(Mod_ScaleTokenNamesBySize);
 add_module(Mod_SetTableEntryAvatarByUrl);
 add_module(Mod_ToolsMenu);

@@ -3,7 +3,7 @@ import AlternativeRadialMenu from './modules/AlternativeRadialMenu/Config'
 import AutoPingNextToken from './modules/AutoPingNextToken/Config'
 import AutoSelectNextToken from './modules/AutoSelectNextToken/Config'
 import AutoSortInitiative from './modules/AutoSortInitiative/Config'
-import BulkMacro from './modules/BulkMacro/Config'
+//import BulkMacro from './modules/BulkMacro/Config'
 import ChangeIdWhenDuplicating from './modules/ChangeIdWhenDuplicating/Config'
 import CharacterIO from './modules/CharacterIO/Config'
 //import CounterTokenName from './modules/CounterTokenName/Config'
@@ -16,7 +16,7 @@ import MacroIO from './modules/MacroIO/Config'
 //import MiddleClickSelect from './modules/MiddleClickSelect/Config'
 //import MoveCameraToToken from './modules/MoveCameraToToken/Config'
 import PageLoadEvent from './modules/PageLoadEvent/Config'
-import RollAndApplyHitDice from './modules/RollAndApplyHitDice/Config'
+//import RollAndApplyHitDice from './modules/RollAndApplyHitDice/Config'
 import Settings from './modules/Settings/Config'
 import SheetTabApi from './modules/SheetTabApi/Config'
 import TableIO from './modules/TableIO/Config'
@@ -69,7 +69,7 @@ addCfg(AlternativeRadialMenu);
 addCfg(AutoPingNextToken);
 addCfg(AutoSelectNextToken);
 addCfg(AutoSortInitiative);
-addCfg(BulkMacro);
+//addCfg(BulkMacro);
 addCfg(ToolsMenu);
 //addCfg(CounterTokenName);
 addCfg(ChangeIdWhenDuplicating);
@@ -86,7 +86,7 @@ addCfg(MacroIO);
 //addCfg(MiddleClickSelect);
 //addCfg(MoveCameraToToken);
 addCfg(PageLoadEvent);
-addCfg(RollAndApplyHitDice);
+//addCfg(RollAndApplyHitDice);
 addCfg(Settings);
 //addCfg(ScaleTokenNamesBySize);
 addCfg(SheetTabApi);

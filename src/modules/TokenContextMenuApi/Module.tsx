@@ -112,8 +112,15 @@ class TokenContextMenuApiModule extends R20Module.OnAppLoadBase {
           const btn = $(".context-menu button").first().clone()[0];
 
           // @ts-ignore
-          btn.children[1].innerText = data.text;
-          btn.children[0].remove();
+          const textSpan = btn.querySelector<HTMLElement>('span[style*="text-align: start"]');          if (textSpan) {
+            textSpan.innerText = data.text;
+          }
+
+          // Find and remove the original icon, since our custom buttons don't have one.
+          const iconSpan = btn.querySelector('span.grimoire__roll20-icon');
+          if (iconSpan) {
+            iconSpan.remove();
+          }
 
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
