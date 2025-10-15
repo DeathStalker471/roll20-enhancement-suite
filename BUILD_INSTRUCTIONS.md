@@ -29,6 +29,8 @@ Then you'll want to run the following line in your command line:
 
 ```
 export NODE_OPTIONS=--openssl-legacy-provider
+or $env:NODE_OPTIONS="--openssl-legacy-provider" for powershell
+
 ```
 
 Afterwards, run `npm run package` again.
@@ -70,7 +72,7 @@ Error in bail mode: Error: callback(): The callback was already called.
 Then you'll want to run the following line in your command line:
 
 ```
-export NODE_OPTIONS=--openssl-legacy-provider
+export NODE_OPTIONS=--openssl-legacy-provider or $env:NODE_OPTIONS="--openssl-legacy-provider" for powershell
 ```
 
 
