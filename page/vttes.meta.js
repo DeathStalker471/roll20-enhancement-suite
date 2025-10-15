@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Death Stalker Jumpgate VTT Enhancement Suite
 // @namespace    https://justas-d.github.io/
-// @version      1.28.27.2
+// @version      1.28.28
 // @description  aka R20ES. Provides quality-of-life and workflow speed improvements to Roll20.
 // @author       @Justas_Dabrila/DeathStalkerjr
 // @updateURL    https://raw.githubusercontent.com/DeathStalker471/roll20-enhancement-suite/refs/heads/master/page/vttes.meta.js
