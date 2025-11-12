@@ -168,7 +168,7 @@ const injectScript = function(name) {
 
   var s = document.createElement("script");
   s.async = false;
-  s.src = getBrowser().extension.getURL(name);
+  s.src = getBrowser().runtime.getURL(name);
 
   s.onload = () => { s.remove(); };
   document.head.appendChild(s);
