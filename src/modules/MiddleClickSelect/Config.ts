@@ -106,12 +106,12 @@ export default <VTTES.Module_Config> {
   mods: [
     {
       includes: "vtt.bundle",
-      
-      stencils: [
-        {
 
-          find: [ `Mousetrap.bind("o",()=>(`,1,`("objects",!0)` ],
-          replace: [ `window.r20es_set_layer = (a) => {`,1,`(a,true);}, Mousetrap.bind("o",()=>(`,1,`("objects",!0)` ],
+      find_replace: [
+        {
+          // Jumpgate pattern: Inject window.r20es_set_layer into the setLayerInternal method
+          find: `setLayerInternal(_e){switch(_e){case"objects":`,
+          replace: `setLayerInternal(_e){window.r20es_set_layer=(a)=>{this.setLayer(a);};switch(_e){case"objects":`,
         },
       ],
     },
