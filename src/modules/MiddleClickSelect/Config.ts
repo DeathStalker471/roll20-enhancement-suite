@@ -103,13 +103,13 @@ export default <VTTES.Module_Config> {
     mouseButtonIndex: 1,
   },
 
-  mods: [
+ mods: [
     {
       includes: "vtt.bundle",
-
       find_replace: [
         {
-          // Jumpgate pattern: Inject window.r20es_set_layer into the setLayerInternal method
+          // We inject a "heartbeat" that ensures the function is attached 
+          // every time Roll20's internal layer logic is accessed.
           find: `setLayerInternal(_e){switch(_e){case"objects":`,
           replace: `setLayerInternal(_e){window.r20es_set_layer=(a)=>{this.setLayer(a);};switch(_e){case"objects":`,
         },

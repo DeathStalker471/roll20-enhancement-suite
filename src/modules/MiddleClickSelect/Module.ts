@@ -13,6 +13,11 @@ class MiddleClickSelectModule extends R20Module.OnAppLoadBase {
 
     if(e.button !== cfg.mouseButtonIndex) return;
 
+    if (typeof (window as any).r20es_set_layer !== "function") {
+       console.warn("VTTES: Layer switch function not initialized by Roll20 yet. Try switching layers manually once.");
+       return; 
+    }
+
     if(cfg.modAlt && !window.r20es.keys.altDown) return;
     if(cfg.modShift && !window.r20es.keys.shiftDown) return;
     if(cfg.modCtrl && !window.r20es.keys.ctrlDown) return;
@@ -59,6 +64,14 @@ class MiddleClickSelectModule extends R20Module.OnAppLoadBase {
 
   setup() {
     if (!R20.isGM()) return;
+
+    // Initialize the global variable as a no-op so 'typeof' checks pass 
+    // and calls don't throw "is not a function" errors.
+    if (!(window as any).r20es_set_layer) {
+        (window as any).r20es_set_layer = () => {
+            console.log("VTTES: Hook registered but VTT engine hasn't connected yet.");
+        };
+    }
 
     document.addEventListener("pointerup", this.on_click);
   }
