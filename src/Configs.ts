@@ -13,7 +13,7 @@ import ExposeD20 from './modules/ExposeD20/Config'
 //import InitiativeAdvanceShortcut from './modules/InitiativeAdvanceShortcut/Config'
 import MacroGenerator from './modules/MacroGenerator/Config'
 import MacroIO from './modules/MacroIO/Config'
-//import MiddleClickSelect from './modules/MiddleClickSelect/Config'
+import MiddleClickSelect from './modules/MiddleClickSelect/Config'
 //import MoveCameraToToken from './modules/MoveCameraToToken/Config'
 import PageLoadEvent from './modules/PageLoadEvent/Config'
 //import RollAndApplyHitDice from './modules/RollAndApplyHitDice/Config'
@@ -83,7 +83,7 @@ addCfg(JukeboxIO);
 addCfg(MacroGenerator);
 addCfg(CharacterTokenModifier);
 addCfg(MacroIO);
-//addCfg(MiddleClickSelect);
+addCfg(MiddleClickSelect);
 //addCfg(MoveCameraToToken);
 addCfg(PageLoadEvent);
 //addCfg(RollAndApplyHitDice);

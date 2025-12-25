@@ -27,7 +27,7 @@ import Mod_JukeboxIO                  from "./modules/JukeboxIO/Module"; //untes
 //import Mod_LibreAudio                 from "./modules/LibreAudio/Module"; //Not Tested
 import Mod_MacroGenerator             from "./modules/MacroGenerator/Module"; //Working 2014 OGL Tested
 import Mod_MacroIO                    from "./modules/MacroIO/Module"; //Persumed Working
-//import Mod_MiddleClickSelect          from "./modules/MiddleClickSelect/Module"; //Issues
+import Mod_MiddleClickSelect          from "./modules/MiddleClickSelect/Module"; // Fixed for Jumpgate!
 //import Mod_MoveCameraToToken          from "./modules/MoveCameraToToken/Module"; //Issues
 import Mod_NightMode                  from "./modules/NightMode/Module"; //untested
 import Mod_PerformanceImprovements    from "./modules/PerformanceImprovements/Module"; //untested
@@ -87,7 +87,7 @@ add_module(Mod_JukeboxIO);
 //add_module(Mod_LibreAudio);
 add_module(Mod_MacroGenerator);
 add_module(Mod_MacroIO);
-//add_module(Mod_MiddleClickSelect);
+add_module(Mod_MiddleClickSelect);
 //add_module(Mod_MoveCameraToToken);
 add_module(Mod_NightMode);
 add_module(Mod_PerformanceImprovements);

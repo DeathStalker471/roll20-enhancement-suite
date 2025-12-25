@@ -315,8 +315,54 @@ namespace R20 {
     }
 
     export function doesTokenContainMouse(mouseEvent: MouseEvent, token: Roll20.CanvasObject): boolean {
-        //This has no nice conversion so far
-        return false; // Placeholder
+        // Jumpgate implementation: Check if mouse is within token bounds
+        if (!token) return false;
+
+        const tokenAny = token as any;
+        if (!tokenAny.position) return false;
+
+        const model = try_get_canvas_object_model(token);
+        if (!model) return false;
+
+        // Get mouse position relative to the canvas
+        const canvasElement = document.querySelector('#editor-wrapper canvas');
+        if (!canvasElement) return false;
+
+        const rect = canvasElement.getBoundingClientRect();
+        const mouseX = mouseEvent.clientX - rect.left;
+        const mouseY = mouseEvent.clientY - rect.top;
+
+        // Get viewport from lightingViewport (updates with zoom and pan)
+        const engine = (window as any).Campaign.engine;
+        const viewport = engine.lightingViewport;
+        if (!viewport) return false;
+
+        // Get current zoom level
+        const zoom = engine.currentZoom || 1;
+
+        // Get token position in world coordinates (position is the CENTER of the token)
+        const worldCenterX = tokenAny.position.x as number;
+        const worldCenterY = -(tokenAny.position.y as number); // Y is inverted in Jumpgate
+
+        const tokenWidth = ((model.get('width') as number) || 70) * zoom;
+        const tokenHeight = ((model.get('height') as number) || 70) * zoom;
+
+        // Transform world coordinates to screen coordinates
+        // Formula: screenPos = (worldPos - viewportPos) * zoom
+        // Note: position is CENTER, so we need to calculate top-left corner
+        const screenCenterX = (worldCenterX - viewport.x) * zoom;
+        const screenCenterY = (worldCenterY - viewport.y) * zoom;
+
+        const tokenX = screenCenterX - tokenWidth / 2;
+        const tokenY = screenCenterY - tokenHeight / 2;
+
+        // Check if mouse is within token bounds
+        const contains = mouseX >= tokenX &&
+                        mouseX <= tokenX + tokenWidth &&
+                        mouseY >= tokenY &&
+                        mouseY <= tokenY + tokenHeight;
+
+        return contains;
     }
 
     export function getCurrentPageTokenByUUID(uuid: string): Roll20.CanvasObject {
