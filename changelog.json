@@ -1,5 +1,5 @@
 {
-    "current": "1.28.29",
+    "current": "1.28.29.1",
     "versions": {
         "1.4.0": {
             "info": {
@@ -3109,6 +3109,18 @@
                 {
                     "id": "",
                     "content": "middleClickToTokenLayer FIXED for Jumpgate. Thanks @helenclarko"
+                }
+            ]
+        },
+        "1.28.29.1": {
+            "info": {
+                "title": "Abilities?",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "add ability order"
                 }
             ]
         }
