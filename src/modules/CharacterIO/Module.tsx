@@ -803,7 +803,7 @@ class Import_Ability_Dialog extends DialogBase<string> {
     super.internalShow();
   }
 
-  on_click_import = (e) => {
+  on_click_import = async (e) => {
     const root = this.getRoot();
     const all_els = root.querySelectorAll(`input.vttes-component`) as any as any[];
 
@@ -836,6 +836,7 @@ class Import_Ability_Dialog extends DialogBase<string> {
         action: ability.action,
         order: ability.order
       });
+      await promiseWait(50);
     }
  
     this.close();
@@ -1316,6 +1317,8 @@ const overwrite_char_v2 = (pc: Roll20.Character, data: any): Promise<any> => {
     let save = {...get_default_character_save()};
     save.name = data.name;
     save.avatar = data.avatar;
+    if(data.abilorder) save.abilorder = data.abilorder;
+    if(data.attrorder) save.attrorder = data.attrorder;
 
     if(R20.isGM()) {
       save.tags = data.tags;
@@ -1347,16 +1350,16 @@ const overwrite_char_v2 = (pc: Roll20.Character, data: any): Promise<any> => {
       pc.updateBlobs(blobs);
     }
 
-    pc.save(save, { success: (v) => {
+    pc.save(save, { success: async (v) => {
+      for(const attrib of data.attribs) {
+        pc.attribs.create(attrib, { silent: true });
+      }
+      for(const ability of data.abilities) {
+        pc.abilities.create(ability, { silent: true });
+        await promiseWait(50);
+      }
       resolve();
     }});
-
-    for(const attrib of data.attribs) {
-      pc.attribs.create(attrib, { silent: true });
-    }
-    for(const ability of data.abilities) {
-      pc.abilities.create(ability, { silent: true });
-    }
   });
 }
 
@@ -1682,8 +1685,10 @@ class CharacterIOModule extends R20Module.OnAppLoadBase {
         tags: pc.attributes.tags || "",
         controlledby: pc.attributes.controlledby || "",
         inplayerjournals: pc.attributes.inplayerjournals || "",
-        attribs: [],
-        abilities: []
+        abilorder: pc.attributes.abilorder || "",
+        attrorder: pc.attributes.attrorder || "",
+        attribs: [] as any[],
+        abilities: [] as any[]
       }
     };
 
@@ -1698,6 +1703,7 @@ class CharacterIOModule extends R20Module.OnAppLoadBase {
 
     for (let abil of pc.abilities.models) {
       data.character.abilities.push({
+        id: abil.id,
         name: abil.attributes.name,
         description: abil.attributes.description,
         istokenaction: abil.attributes.istokenaction,
