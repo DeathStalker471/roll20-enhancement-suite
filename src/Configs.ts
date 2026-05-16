@@ -44,7 +44,7 @@ import SetTableEntryAvatarByUrl from "./modules/SetTableEntryAvatarByUrl/Config"
 //import TokenBarPositionAdjust from "./modules/TokenBarPositionAdjust/Config"
 import PerformanceImprovements from "./modules/PerformanceImprovements/Config"
 import ChromeUpdateChecker from "./modules/ChromeUpdateChecker/Config"
-//import WebpackFixes from "./modules/WebpackFixes/Config"
+import WebpackFixes from "./modules/WebpackFixes/Config"
 import CharacterAvatarFromURL from "./modules/CharacterAvatarFromURL/Config"
 import CameraStartPosition from "./modules/CameraStartPosition/Config"
 import HandoutImageFromURL  from "./modules/HandoutImageFromURL/Config"
@@ -108,7 +108,7 @@ if(BUILD_CONSTANT_TARGET_PLATFORM === "userscript" ||
    BUILD_CONSTANT_TARGET_PLATFORM === "chrome" 
 ) {
   addCfg(FixPatienceJs);
-  //addCfg(WebpackFixes);
+  addCfg(WebpackFixes);
 }
 
 if(BUILD_CONSTANT_TARGET_PLATFORM === "chrome") {

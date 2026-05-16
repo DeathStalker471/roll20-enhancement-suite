@@ -106,12 +106,23 @@ export default <VTTES.Module_Config> {
  mods: [
     {
       includes: "vtt.bundle",
-      find_replace: [
+
+      // Stencil captures the minified variable name dynamically so this survives
+      // Roll20 bundle rebuilds regardless of what the minifier picks.
+      stencils: [
         {
-          // We inject a "heartbeat" that ensures the function is attached 
-          // every time Roll20's internal layer logic is accessed.
-          find: `setLayerInternal(_e){switch(_e){case"objects":`,
-          replace: `setLayerInternal(_e){window.r20es_set_layer=(a)=>{this.setLayer(a);};switch(_e){case"objects":`,
+          // Use {setLayerInternal( to anchor on the method definition.
+          // Call sites look like de.setLayerInternal( so they won't match.
+          find: [
+            `{setLayerInternal(`, 1,
+            `){switch(`, 0,
+            `){case"objects":`
+          ],
+          replace: [
+            `{setLayerInternal(`, 1,
+            `){window.r20es_set_layer=(a)=>{this.setLayer(a);};switch(`, 1,
+            `){case"objects":`
+          ],
         },
       ],
     },
