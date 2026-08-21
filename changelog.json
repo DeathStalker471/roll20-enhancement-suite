@@ -1,5 +1,5 @@
 {
-    "current": "1.28.29.3",
+    "current": "1.28.30",
     "versions": {
         "1.4.0": {
             "info": {
@@ -3145,6 +3145,18 @@
                 {
                     "id": "",
                     "content": "Webpack reintroduced and Middle-Click to stencil"
+                }
+            ]
+        },
+        "1.28.30": {
+            "info": {
+                "title": "Funtimes are Not so Fun",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "Update and Harden link, and play with tampermonkey once more"
                 }
             ]
         }
