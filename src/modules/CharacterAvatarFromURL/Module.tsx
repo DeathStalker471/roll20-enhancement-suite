@@ -41,13 +41,10 @@ class CharacterAvatarFromURL extends R20Module.OnAppLoadBase {
         if(!el.firstElementChild) continue;
 
         if(el.firstElementChild.classList.contains("charactereditor")) {
-          console.log(el);
-
           const character_id = el.getAttribute("data-characterid");
+          const avatar_el = el.querySelector(".avatar") as HTMLElement;
 
-          const avatar_el = el.querySelector(".avatar");
-
-          if(avatar_el) {
+          if(avatar_el && avatar_el.parentElement && !avatar_el.parentElement.querySelector(`.${BUTTON_CLASS}`)) {
             const button = (
               <button
                 className={`btn ${BUTTON_CLASS}`}
@@ -60,9 +57,6 @@ class CharacterAvatarFromURL extends R20Module.OnAppLoadBase {
             );
 
             avatar_el.parentNode.insertBefore(button, avatar_el.nextElementSibling);
-          }
-          else {
-            console.error("Could not find avatar_el");
           }
         }
       }

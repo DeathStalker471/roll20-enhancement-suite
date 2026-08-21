@@ -105,8 +105,8 @@ if(doesBrowserNotSupportResponseFiltering()) {
         cancel = true;
       }
     }
-    else if(request.url.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle")) {
-      if(!request.url.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle?n")) {
+    else if(request.url.includes("cdn.roll20.net") && request.url.includes("vtt.bundle")) {
+      if(!request.url.includes("?n")) {
         cancel = true;
       }
     }
@@ -141,15 +141,11 @@ if(doesBrowserNotSupportResponseFiltering()) {
   );
 }
 else {
-  const redirect_targets = [
-    "https://app.roll20.net/editor/startjs",
-    "https://cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle",
-  ];
-
   // thanks, Firefox.
   const request_listener = (request) => {
 
-    const is_redir = typeof(redirect_targets.find(f => request.url.startsWith(f))) !== "undefined";
+    const is_redir = request.url.startsWith("https://app.roll20.net/editor/startjs") ||
+                     (request.url.includes("cdn.roll20.net") && request.url.includes("vtt.bundle"));
     //console.log(`${is_redir}: ${request.url}`);
 
     if(!is_redir) {

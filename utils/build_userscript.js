@@ -65,61 +65,82 @@ const meta = `// ==UserScript==
 // @match        https://app.roll20.net/editor/
 // @match        https://app.roll20.net/editor/#*
 // @match        https://app.roll20.net/editor/?*
+// @run-at       document-start
 // @grant        GM.xmlHttpRequest
 // @grant        unsafeWindow
 // @connect      cdn.roll20.net
-// @webRequest [{"selector":{"include":"*://browser.sentry-cdn.com/*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://www.datadoghq-browser-agent.com/datadog-rum.js"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://cdn.userleap.com/*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://www.google-analytics.com/*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/jquery-ui.1.9.0.custom.min.js?*","exclude":"*://app.roll20.net/js/jquery-ui.1.9.0.custom.min.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/jquery-1.9.1.js","exclude":"*://app.roll20.net/v2/js/jquery-1.9.1.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/jquery.migrate.js","exclude":"*://app.roll20.net/v2/js/jquery.migrate.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/featuredetect.js?2","exclude":"*://app.roll20.net/js/featuredetect.js?2n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/patience.js","exclude":"*://app.roll20.net/v2/js/patience.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/editor/startjs/?timestamp*","exclude":"*://app.roll20.net/editor/startjs/?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/d20/loading.js?v=11","exclude":"*://app.roll20.net/js/d20/loading.js?n=11&v=11"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle.*.js","exclude":"*://cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle.*.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/tutorial_tips.js","exclude":"*://app.roll20.net/js/tutorial_tips.js?n*"},"action":"cancel"}]
+// @webRequest   [{"selector": "*://cdn.roll20.net/*vtt.bundle*", "action": "cancel"}]
+// @webRequest   [{"selector": "*://app.roll20.net/editor/startjs/?timestamp*", "action": "cancel"}]
+// @webRequest   [{"selector": "*://browser.sentry-cdn.com/*", "action": "cancel"}]
+// @webRequest   [{"selector": "*://datadoghq-browser-agent.com/*", "action": "cancel"}]
+// @webRequest   [{"selector": "*://cdn.userleap.com/*", "action": "cancel"}]
+// @webRequest   [{"selector": "*://google-analytics.com/*", "action": "cancel"}]
 // ==/UserScript==
 `;
 
 script = `
+(function() {
+  'use strict';
 
-const scripts = unsafeWindow.document.body.querySelectorAll("script");
-let bundle_url = null;
+  unsafeWindow.enhancementSuiteEnabled = true;
+  const now = Date.now();
+  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+  const isBridgeActive = !!(unsafeWindow.__R20ES_BRIDGE_ACTIVE__ || (document.documentElement && document.documentElement.dataset && document.documentElement.dataset.r20esBridge));
 
-for(const el of scripts) {
-  if(el.src && el.src.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle")) {
-    bundle_url = el.src;
+  console.log(\`[R20ES] Platform: \${isFirefox ? "Firefox" : "Chromium"}, Bridge Active: \${isBridgeActive}\`);
+
+  function findBundleUrl() {
+    const scripts = Array.from(document.querySelectorAll("script"));
+    for(const el of scripts) {
+      if(el.src && el.src.includes("cdn.roll20.net") && el.src.includes("vtt.bundle")) {
+        return el.src;
+      }
+    }
+    return null;
   }
-}
-console.log(\`Userscript bundle url: \${bundle_url}\`);
 
-if(bundle_url == null) {
-  alert("VTTES Error: Failed to find the bundle URL. VTTES will not function. Please report this on our Discord");
-  return;
-}
+  function startUserscript(bundle_url) {
+    console.log(\`[R20ES] Discovered bundle url: \${bundle_url}\`);
+    unsafeWindow.USERSCRIPT_VTT_BUNDLE_URL = bundle_url;
 
-unsafeWindow.enhancementSuiteEnabled = true;
+    // @UserscriptScriptFetching
+    GM.xmlHttpRequest({
+      method: "GET",
+      url: \`\${bundle_url}?n\${now}\`,
+      onload: (response) => {
+        console.log("[R20ES] Userscript got vtt.bundle.js response");
+        unsafeWindow.USERSCRIPT_VTT_BUNDLE_DATA = response.responseText;
+      },
+      onerror: (err) => {
+        console.error("[R20ES] Failed to fetch bundle:", err);
+      }
+    });
 
-const now = Date.now();
-
-// @UserscriptScriptFetching
-GM.xmlHttpRequest({
-  method: "GET",
-  url: \`\${bundle_url}?n\${now}\`,
-  onload: (response) => {
-    console.log("Userscript got vtt.bundle.js response:", response);
-    unsafeWindow.USERSCRIPT_VTT_BUNDLE_DATA = response.responseText;
-  }
-});
-
-function boot() {
+    function boot() {
 ${script}
-};
-const str = \`(\${boot.toString()})()\`;
-window.eval(str);
+    };
+    const str = \`(\${boot.toString()})()\`;
+    window.eval(str);
+  }
+
+  let bundle_url = findBundleUrl();
+  if(bundle_url) {
+    startUserscript(bundle_url);
+  } else {
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      bundle_url = findBundleUrl();
+      if(bundle_url) {
+        clearInterval(interval);
+        startUserscript(bundle_url);
+      } else if(attempts >= 300) {
+        clearInterval(interval);
+        alert("VTTES Error: Failed to find the bundle URL. VTTES will not function. Please report this on our Discord");
+      }
+    }, 10);
+  }
+})();
 `;
 
 if(is_prod) {
@@ -131,6 +152,13 @@ ${script}
 fs.writeFileSync(path_to_script, script);
 fs.writeFileSync(path_to_meta, meta);
 
+if (is_prod) {
+  if (fs.existsSync("page")) {
+    fs.writeFileSync("page/vttes.user.js", script);
+    fs.writeFileSync("page/vttes.meta.js", meta);
+  }
+}
+
 /*
 For development, use this loader script:
 
@@ -140,27 +168,13 @@ For development, use this loader script:
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        https://app.roll20.net/editor/
+// @match        https://app.roll20.net/editor*
+// @run-at       document-start
 // @grant        GM.xmlHttpRequest
 // @grant        unsafeWindow
 // @connect      cdn.roll20.net
-// @require      file:///work/vttes/builds/userscript/dev/vttes.user.js
-// @webRequest [{"selector":{"include":"*://browser.sentry-cdn.com/*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://www.datadoghq-browser-agent.com/datadog-rum.js"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://cdn.userleap.com/*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://www.google-analytics.com/*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/jquery-ui.1.9.0.custom.min.js?*","exclude":"*://app.roll20.net/js/jquery-ui.1.9.0.custom.min.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/jquery-1.9.1.js","exclude":"*://app.roll20.net/v2/js/jquery-1.9.1.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/jquery.migrate.js","exclude":"*://app.roll20.net/v2/js/jquery.migrate.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/featuredetect.js?2","exclude":"*://app.roll20.net/js/featuredetect.js?2n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/v2/js/patience.js","exclude":"*://app.roll20.net/v2/js/patience.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/editor/startjs/?timestamp*","exclude":"*://app.roll20.net/editor/startjs/?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/d20/loading.js?v=11","exclude":"*://app.roll20.net/js/d20/loading.js?n=11&v=11"},"action":"cancel"}]
-//
-// @webRequest [{"selector":{"include":"*://cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle.*.js","exclude":"*://cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle.*.js?n*"},"action":"cancel"}]
-// @webRequest [{"selector":{"include":"*://app.roll20.net/js/tutorial_tips.js","exclude":"*://app.roll20.net/js/tutorial_tips.js?n*"},"action":"cancel"}]
-
+// @require      file:///c:/Users/xligh/Documents/GitHub/roll20-enhancement-suite/builds/userscript/dev/vttes.user.js
 // ==/UserScript==
 
-change the @require path to the dev vttes.user.js
- */
+Change the @require path to the dev vttes.user.js
+*/

@@ -35,6 +35,7 @@ export class EventSubscriber {
     public subscribe() {
         if (this._isSubscribed) return;
         const target = this._targetGetter();
+        if (!target) return;
 
         if("on" in target) {
             target.on(this._name, this._callback)
@@ -48,6 +49,7 @@ export class EventSubscriber {
     public unsubscribe() {
         if (!this._isSubscribed) return;
         const target = this._targetGetter();
+        if (!target) return;
 
         if("off" in target) {
             target.off(this._name, this._callback);

@@ -339,14 +339,18 @@ export const bootstrap = () => {
     if(BUILD_CONSTANT_TARGET_PLATFORM === "chrome" || 
        BUILD_CONSTANT_TARGET_PLATFORM === "userscript"
     ) {
-      const script_elements = window.document.body.querySelectorAll("script") as any as HTMLScriptElement[];
-      let bundle_url = null;
+      let bundle_url = (window as any).USERSCRIPT_VTT_BUNDLE_URL || null;
 
-      for(const el of script_elements) {
-        if(el.src && el.src.includes("cdn.roll20.net/vtt/jumpgate/production/latest/vtt.bundle")) {
-          bundle_url = el.src;
+      if(!bundle_url) {
+        const script_elements = Array.from(document.querySelectorAll("script")) as HTMLScriptElement[];
+        for(const el of script_elements) {
+          if(el.src && el.src.includes("cdn.roll20.net") && el.src.includes("vtt.bundle")) {
+            bundle_url = el.src;
+            break;
+          }
         }
       }
+
       console.log(`Got bundle url: ${bundle_url}`);
       if(bundle_url == null) {
         alert("VTTES Error: Failed to find the bundle URL. VTTES will not function. Please report this on our Discord");

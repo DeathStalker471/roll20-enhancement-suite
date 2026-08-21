@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>R20ES Interceptor Bridge</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo-wrapper">
+        <img src="icons/icon48.png" alt="R20ES Logo" class="logo" />
+        <div>
+          <h1 class="title">R20ES Bridge</h1>
+          <span class="subtitle">Helper Extension v1.0.0</span>
+        </div>
+      </div>
+      <div class="status-badge" id="statusBadge">
+        <span class="status-dot"></span>
+        <span class="status-text">Active</span>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="card">
+        <h2 class="section-title">Network Interceptions</h2>
+        <ul class="rule-list">
+          <li class="rule-item">
+            <span class="rule-icon block-icon">🚫</span>
+            <div class="rule-details">
+              <span class="rule-name">Block VTT Bundle</span>
+              <span class="rule-pattern">cdn.roll20.net/*vtt.bundle.*.js</span>
+            </div>
+            <span class="rule-status">Blocked</span>
+          </li>
+          <li class="rule-item">
+            <span class="rule-icon allow-icon">🔓</span>
+            <div class="rule-details">
+              <span class="rule-name">Relax CSP Headers</span>
+              <span class="rule-pattern">app.roll20.net/editor*</span>
+            </div>
+            <span class="rule-status">Stripped</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Tampermonkey Status</h2>
+        <div class="userscript-status">
+          <p class="description">
+            This bridge extension allows your Tampermonkey userscript to intercept, patch, and execute Jumpgate code without CSP or symbol collision errors.
+          </p>
+          <div class="bridge-flag-box">
+            <span class="flag-label">Global Flag:</span>
+            <code>window.__R20ES_BRIDGE_ACTIVE__</code>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Roll20 Enhancement Suite</span>
+      <span class="version-tag">MV3 DNR Bridge</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

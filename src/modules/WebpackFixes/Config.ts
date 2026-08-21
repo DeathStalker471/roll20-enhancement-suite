@@ -17,7 +17,7 @@ export default <VTTES.Module_Config> {
           search_from: `throw new Error("Automatic publicPath is not supported in this browser");`,
           search_from_index_offset: -20,
           find: [ `if(!`,1,`)throw new Error("Automatic publicPath is not supported in this browser");` ],
-          replace: [ 1,` = "https://cdn.roll20.net/vtt/jumpgate/production/latest/";` ],
+          replace: [ 1,` = (window.USERSCRIPT_VTT_BUNDLE_URL ? window.USERSCRIPT_VTT_BUNDLE_URL.replace(/\\/[^\\/]+$/, "/") : (document.querySelector('script[src*="vtt.bundle"]') ? document.querySelector('script[src*="vtt.bundle"]').src.replace(/\\/[^\\/]+$/, "/") : "https://cdn.roll20.net/vtt/jumpgate/production/"));` ],
         },
       ],
     },

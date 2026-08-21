@@ -98,7 +98,12 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
     //console.log("iframe is", iframe);
 
     const wait_for_load = new Promise(ok => {
-      if(iframe.contentDocument.readyState == "complete") {
+      try {
+        if(iframe.contentDocument && iframe.contentDocument.readyState == "complete") {
+          ok();
+          return;
+        }
+      } catch (e) {
         ok();
         return;
       }
@@ -113,35 +118,37 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
 
     await wait_for_load;
 
-    //console.log("iframe loaded");
-
-    let navTabsRoot = null
-
+    let navTabsRoot = null;
     let body = null;
 
     const retry = new Promise(ok => {
-      const retry_interval = 1000;
+      let attempts = 0;
+      const retry_interval = 200;
       const check = () => {
-
-        if(iframe.contentDocument) {
-          body = iframe.contentDocument.body;
-          //console.log("body", body);
-          if(body) {
-            const dialog = body.querySelector("#dialog-window");
-
-            //console.log("dialog", dialog);
-
-            if(dialog) {
-              navTabsRoot = dialog.querySelector(".nav-tabs");
-
-              //console.log("navTabsRoot", navTabsRoot);
-
-              if(navTabsRoot) {
-                ok();
-                return;
+        attempts++;
+        try {
+          if(iframe.contentDocument) {
+            body = iframe.contentDocument.body;
+            if(body) {
+              const dialog = body.querySelector("#dialog-window");
+              if(dialog) {
+                navTabsRoot = dialog.querySelector(".nav-tabs");
+                if(navTabsRoot) {
+                  ok();
+                  return;
+                }
               }
             }
           }
+        } catch (e) {
+          // Cross origin iframe (e.g. Beacon sheet), cannot access DOM
+          ok();
+          return;
+        }
+
+        if (attempts >= 10) {
+          ok();
+          return;
         }
 
         setTimeout(check, retry_interval);
@@ -150,7 +157,7 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
       setTimeout(check, retry_interval);
     });
 
-    const timeout = promiseWait(10000);
+    const timeout = promiseWait(2500);
 
     await Promise.race([retry, timeout]);
 
