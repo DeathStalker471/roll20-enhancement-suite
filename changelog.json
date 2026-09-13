@@ -1,5 +1,5 @@
 {
-    "current": "1.28.30",
+    "current": "1.29.0",
     "versions": {
         "1.4.0": {
             "info": {
@@ -3157,6 +3157,22 @@
                 {
                     "id": "",
                     "content": "Update and Harden link, and play with tampermonkey once more"
+                }
+            ]
+        },
+        "1.29.0": {
+            "info": {
+                "title": "Support Broadens once more",
+                "media": ""
+            },
+            "changes": [
+                {
+                    "id": "",
+                    "content": "Reimplment Charactio for advanced sheets"
+                },
+                {
+                    "id": "",
+                    "content": "1.28.30"
                 }
             ]
         }
