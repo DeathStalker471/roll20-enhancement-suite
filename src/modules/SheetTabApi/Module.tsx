@@ -9,6 +9,56 @@ const ATTRIB_NAV_HAS_LISTENER = "data-r20es-character-sheet-nav-event";
 const TAB_STYLE = "r20es-character-sheet-tab";
 const ATTRIB_CUSTOM_NAV = "data-r20es-nav";
 
+const ADVANCED_PANEL_CLASS = "r20es-asv-panel";
+const ADVANCED_STYLE_ID = "r20es-asv-sheettab-style";
+const ADVANCED_TAB_CLASS = "r20es-asv-tab";
+
+const isAdvancedDialog = (dialog: HTMLElement | null): boolean => {
+  return !!(dialog && dialog.classList && dialog.classList.contains("asv"));
+};
+
+const getDialogCharacterId = (dialog: HTMLElement): string | null => {
+  return dialog.getAttribute(CHAR_ID_ATTRIBUTE)
+    || dialog.getAttribute("data-characterId")
+    || dialog.getAttribute("char-id");
+};
+
+const ensureAdvancedStyle = () => {
+  if (document.getElementById(ADVANCED_STYLE_ID)) return;
+
+  const style = document.createElement("style");
+  style.id = ADVANCED_STYLE_ID;
+  // Overlay panel only. Tab button chrome comes from cloning Roll20's own nav nodes.
+  style.textContent = `
+.${ADVANCED_PANEL_CLASS} {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: none;
+  overflow: auto;
+  background: var(--vtt-asv-window-bg, #fff);
+  color: #333;
+  padding: 12px 16px 20px;
+  box-sizing: border-box;
+  font-family: "Proxima Nova", "Nunito", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+.${ADVANCED_PANEL_CLASS}.is-open {
+  display: block;
+}
+
+.dark .${ADVANCED_PANEL_CLASS},
+.asv.dark .${ADVANCED_PANEL_CLASS} {
+  background: #1b1c1f;
+  color: #f0f0f0;
+}
+`;
+  document.head.appendChild(style);
+};
+
 class SheetTabApiModule extends R20Module.OnAppLoadBase {
   observer: MutationObserver;
   infectedNavs: Array<HTMLElement>;
@@ -23,7 +73,6 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
     this.onClickNormalNavs = this.onClickNormalNavs.bind(this);
     this.rescan = this.rescan.bind(this);
 
-    // bookkeeping for disposal
     this.infectedNavs = [];
   }
 
@@ -50,11 +99,10 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
 
     const internalTabs = SheetTab._getInternalData();
     const tab = internalTabs.tabsById[targetTabClass];
+    if (!tab) return;
 
     const char_id = e.target.getAttribute(CHAR_ID_ATTRIBUTE);
     const tabInstance = tab.getInstanceData(char_id);
-
-    //console.log(tabInstance);
 
     if(tab && tab.onShow) {
       tab.onShow(tabInstance);
@@ -78,6 +126,143 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
     }
   }
 
+  hideAdvancedPanels(dialog: HTMLElement) {
+    dialog.querySelectorAll(`:scope > .${ADVANCED_PANEL_CLASS}`).forEach((el) => {
+      el.classList.remove("is-open");
+    });
+    dialog.querySelectorAll(`:scope > .${ADVANCED_PANEL_CLASS} > .${TAB_STYLE}`).forEach((el: HTMLElement) => {
+      el.style.display = "none";
+    });
+    dialog.querySelectorAll(`.asv__header__nav__tabs > li.${ADVANCED_TAB_CLASS}`).forEach((el) => {
+      el.classList.remove("active");
+    });
+  }
+
+  positionAdvancedPanel(dialog: HTMLElement, panel: HTMLElement) {
+    const header = dialog.querySelector(".asv__header") as HTMLElement;
+    const top = header ? header.offsetHeight : 88;
+    panel.style.top = `${top}px`;
+  }
+
+  injectAdvancedHostWidget(dialog: HTMLElement, characterId: string, tab) {
+    const ul = dialog.querySelector(".asv__header__nav__tabs") as HTMLElement;
+    if (!ul) return false;
+
+    if (ul.querySelector(`li.${ADVANCED_TAB_CLASS} [data-tab="${tab.id}"]`)) {
+      return false;
+    }
+
+    // Prefer a real Roll20 tab so scoped data-v-* styles apply without reimplementation.
+    const sampleLi = ul.querySelector(`li:not(.${ADVANCED_TAB_CLASS})`) as HTMLElement;
+    if (!sampleLi) return false;
+
+    ensureAdvancedStyle();
+
+    if (getComputedStyle(dialog).position === "static") {
+      dialog.style.position = "relative";
+    }
+
+    const li = sampleLi.cloneNode(true) as HTMLElement;
+    li.classList.remove("active");
+    li.classList.add(ADVANCED_TAB_CLASS);
+
+    const btn = li.querySelector("button, a") as HTMLElement;
+    if (!btn) return false;
+
+    const tabInstanceData = tab.getInstanceData(characterId);
+    const renderFxResult = tab.renderFx(tabInstanceData);
+
+    let panelRoot = dialog.querySelector(`:scope > .${ADVANCED_PANEL_CLASS}`) as HTMLElement;
+    if (!panelRoot) {
+      panelRoot = document.createElement("div");
+      panelRoot.className = ADVANCED_PANEL_CLASS;
+      panelRoot.setAttribute("data-r20es-asv-panel", characterId);
+      dialog.appendChild(panelRoot);
+
+      // Clicks on Roll20's own header/nav collapse our overlay.
+      dialog.addEventListener("click", (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (!target) return;
+        if (panelRoot.contains(target)) return;
+        if (target.closest && target.closest(`li.${ADVANCED_TAB_CLASS}`)) return;
+        this.hideAdvancedPanels(dialog);
+      }, true);
+    }
+
+    let tabPanel = panelRoot.querySelector(`:scope > .${TAB_STYLE}.${tab.id}`) as HTMLElement;
+    if (!tabPanel) {
+      tabPanel = document.createElement("div");
+      tabPanel.className = `${TAB_STYLE} ${tab.id}`;
+      tabPanel.style.display = "none";
+      tabPanel.style.minHeight = "100%";
+      panelRoot.appendChild(tabPanel);
+    }
+
+    tabInstanceData.contentRoot = panelRoot;
+    tabInstanceData.root = renderFxResult;
+    tabPanel.appendChild(renderFxResult);
+    tab._addElem(tabPanel);
+
+    btn.setAttribute("data-tab", tab.id);
+    btn.setAttribute(CHAR_ID_ATTRIBUTE, characterId);
+    btn.setAttribute(ATTRIB_CUSTOM_NAV, "true");
+    btn.textContent = tab.name;
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const isOpen = li.classList.contains("active");
+      this.hideAdvancedPanels(dialog);
+
+      if (isOpen) {
+        this.positionAdvancedPanel(dialog, panelRoot);
+        return;
+      }
+
+      // Deactivate Roll20 tabs visually so ours reads as selected.
+      ul.querySelectorAll("li").forEach((el) => el.classList.remove("active"));
+
+      if (tab.onShow) {
+        tab.onShow(tabInstanceData);
+      }
+
+      panelRoot.querySelectorAll(`:scope > .${TAB_STYLE}`).forEach((el: HTMLElement) => {
+        el.style.display = "none";
+      });
+
+      li.classList.add("active");
+      this.positionAdvancedPanel(dialog, panelRoot);
+      panelRoot.classList.add("is-open");
+      tabPanel.style.display = "block";
+
+      if (tabInstanceData.rerender) {
+        try { tabInstanceData.rerender(); } catch (err) { console.error(err); }
+      }
+    });
+
+    ul.appendChild(li);
+    tab._addElem(li);
+
+    return true;
+  }
+
+  tryInjectAllAdvanced(dialog: HTMLElement) {
+    if (!isAdvancedDialog(dialog)) return;
+
+    const characterId = getDialogCharacterId(dialog);
+    if (!characterId) return;
+
+    const data = SheetTab._getInternalData();
+    for (const tab of data.tabs) {
+      if (tab.predicate) {
+        const char = R20.getCharacter(characterId);
+        if (!tab.predicate(char)) continue;
+      }
+      this.injectAdvancedHostWidget(dialog, characterId, tab);
+    }
+  }
+
   async try_injecting_single_widget(iframe, tab) {
     if(!iframe) return false;
     if(iframe.nodeName != "IFRAME") return false;
@@ -85,6 +270,9 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
     const character_dialog = iframe.parentNode;
     if(!character_dialog) return false
     if(!character_dialog.classList.contains("characterdialog")) return false;
+
+    // Advanced sheets are handled only via tryInjectAllAdvanced.
+    if(isAdvancedDialog(character_dialog)) return false;
 
     const characterId = character_dialog.getAttribute(CHAR_ID_ATTRIBUTE);
 
@@ -94,8 +282,6 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
         return;
       }
     }
-
-    //console.log("iframe is", iframe);
 
     const wait_for_load = new Promise(ok => {
       try {
@@ -161,14 +347,11 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
 
     await Promise.race([retry, timeout]);
 
-    //console.log("navTabsRoot", navTabsRoot);
-
     if(navTabsRoot) {
 
       {
         const query_string = `[data-tab=${tab.id}]`
         const query = navTabsRoot.querySelector(query_string);
-        //console.log(navTabsRoot, query_string, query);
         if(query) {
           return false;
         }
@@ -176,9 +359,9 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
 
       const nav = (
         <li>
-          <a 
-            onClick={this.navOnClick} 
-            data-tab={tab.id} 
+          <a
+            onClick={this.navOnClick}
+            data-tab={tab.id}
             href="javascript:void(0);"
             data-characterid={characterId}
           >
@@ -231,13 +414,22 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
   observerCallback(muts) {
     for (var e of muts) {
       for (const added of e.addedNodes) {
-        if(this.try_injecting_widget(added)) {
-          return;
+        if (!added || added.nodeType !== 1) continue;
+
+        const el = added as HTMLElement;
+        if (el.classList && el.classList.contains("characterdialog") && el.classList.contains("asv")) {
+          this.tryInjectAllAdvanced(el);
+        } else if (el.querySelectorAll) {
+          el.querySelectorAll(".characterdialog.asv").forEach((d) => {
+            this.tryInjectAllAdvanced(d as HTMLElement);
+          });
         }
+
+        this.try_injecting_widget(added);
       }
 
-      if(this.try_injecting_widget(e.target)) {
-        return;
+      if(e.target && (e.target as HTMLElement).nodeName === "IFRAME") {
+        this.try_injecting_widget(e.target);
       }
     }
   }
@@ -246,6 +438,10 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
     const existingHeaders = document.querySelectorAll("iframe");
     existingHeaders.forEach(header => {
       this.try_injecting_single_widget(header, tab);
+    });
+
+    document.querySelectorAll(".characterdialog.asv").forEach((dialog) => {
+      this.tryInjectAllAdvanced(dialog as HTMLElement);
     });
   }
 
@@ -257,6 +453,10 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
       const existingHeaders = document.querySelectorAll("iframe");
       existingHeaders.forEach(header => {
         this.try_injecting_widget(header);
+      });
+
+      document.querySelectorAll(".characterdialog.asv").forEach((dialog) => {
+        this.tryInjectAllAdvanced(dialog as HTMLElement);
       });
     }
 
@@ -279,6 +479,10 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
 
     this.infectedNavs.length = 0;
 
+    document.querySelectorAll(`li.${ADVANCED_TAB_CLASS}, .${ADVANCED_PANEL_CLASS}`).forEach(el => el.remove());
+    const style = document.getElementById(ADVANCED_STYLE_ID);
+    if (style) style.remove();
+
     if (this.observer) this.observer.disconnect();
   }
 }
@@ -286,4 +490,3 @@ class SheetTabApiModule extends R20Module.OnAppLoadBase {
 export default () => {
   new SheetTabApiModule().install();
 };
-

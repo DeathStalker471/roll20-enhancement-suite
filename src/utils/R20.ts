@@ -97,6 +97,19 @@ namespace R20 {
 
     export function rerender_character_sheet(sheet: Roll20.Character) {
       try {
+        const view: any = sheet.view;
+        const sheetAny: any = sheet;
+        const isAdvanced = !!(sheetAny.characterSheet && sheetAny.characterSheet.advanced);
+
+        if (isAdvanced) {
+          // Advanced sheets are Vue dialogs (dnd2024byroll20 etc). jQuery
+          // .dialog() is not present; just re-show so state/iframe refresh.
+          if (view && typeof view.showDialog === "function") {
+            view.showDialog();
+          }
+          return;
+        }
+
         sheet.view.$el.dialog("close");
         setTimeout(() => { sheet.view.showDialog(); }, 500);
       } catch(e) { console.log(e); }
